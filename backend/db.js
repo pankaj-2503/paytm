@@ -1,8 +1,11 @@
-const mongoose=require("mongoose");
+// backend/db.js
+const mongoose = require('mongoose');
+const {NAME, PASSWORD} = require("./config");
+mongoose.connect(`mongodb+srv://${NAME}:${PASSWORD}@cluster0.s0ien9j.mongodb.net/`)
 
-mongoose.connect("mongodb+srv://pk:A9CLbBxlj265ZOEk@cluster0.s0ien9j.mongodb.net/")
 
-const userSchema=new mongoose.Schema({
+// Create a Schema for Users
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
@@ -29,27 +32,24 @@ const userSchema=new mongoose.Schema({
         trim: true,
         maxLength: 50
     }
-})
+});
 
-
-
-const User=mongoose.model("User",userSchema);
-
-const accountSchema=new mongoose.Schema({
-    userId:{
-        //reference to user schema
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
-        required:true,
+const accountSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to User model
+        ref: 'User',
+        required: true
     },
     balance: {
-        type:Number,
-        required:true
+        type: Number,
+        required: true
     }
-})
+});
 
-const Account=mongoose.model("Account",accountSchema);
-module.exports={
-    User,
-    Account,
-}
+const Account = mongoose.model('Account', accountSchema);
+const User = mongoose.model('User', userSchema);
+
+module.exports = {
+	User,
+    Account
+};
